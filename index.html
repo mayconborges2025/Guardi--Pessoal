@@ -1,0 +1,280 @@
+<!DOCTYPE html> 
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gideon - Guardiã Pessoal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at center, #0a0f24 0%, #000 100%);
+      color: #00ffe0;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+    .hologram {
+      background: rgba(0, 255, 224, 0.05);
+      border: 1px solid rgba(0, 255, 224, 0.3);
+      border-radius: 1rem;
+      padding: 2rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 30px rgba(0, 255, 224, 0.4);
+      animation: float 4s ease-in-out infinite;
+      max-width: 100%;
+      width: 500px;
+    }
+    .hologram img {
+      width: 100%;
+      max-width: 200px;
+      border-radius: 1rem;
+      opacity: 0.9;
+      filter: drop-shadow(0 0 15px #00ffe0aa);
+      animation: flicker 2s infinite alternate;
+    }
+    @keyframes flicker {
+      0% { opacity: 0.8; }
+      100% { opacity: 1; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .hologram h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .temp, .message, .advice, .alert, .extra-info {
+      font-size: 1.1rem;
+      margin-top: 1rem;
+      word-wrap: break-word;
+    }
+    .alert-danger {
+      color: #ff4444;
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-shadow: 0 0 5px #ff0000;
+    }
+    .signature {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      opacity: 0.6;
+    }
+    .icon {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .forecast {
+      margin-top: 2rem;
+      text-align: left;
+    }
+    .forecast-day {
+      margin-bottom: 1rem;
+    }
+    .forecast-day h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+    .forecast-day p {
+      margin: 0.2rem 0;
+      font-size: 1rem;
+    }
+    @media (max-width: 600px) {
+      .hologram {
+        padding: 1.5rem;
+      }
+      .hologram h1 {
+        font-size: 1.6rem;
+      }
+      .temp, .message, .advice, .alert, .extra-info {
+        font-size: 1rem;
+      }
+      .alert-danger {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hologram">
+    <div id="iconeClima" class="icon">☀️</div>
+    <img src="assets/gideon.png.png" alt="Gideon Holograma" />
+    <h1>Olá, eu sou a Gideon</h1>
+    <p class="temp" id="temperatura">Carregando clima atual...</p>
+    <p class="message" id="mensagem">Aguarde...</p>
+    <p class="advice" id="conselho">Analisando ameaças potenciais...</p>
+    <p class="alert" id="alerta">⚠️ Monitorando seu entorno...</p>
+    <p class="extra-info" id="infoExtra">Detalhes do clima sendo carregados...</p>
+
+    <!-- Botão para atualizar clima -->
+    <button id="botaoAtualizar" style="margin-top: 1rem; padding: 0.5rem 1rem; font-size: 1rem; cursor: pointer;">
+      Atualizar Clima
+    </button>
+
+    <div class="forecast" id="previsaoDias">
+      <h2>Previsão do Tempo:</h2>
+      <!-- Previsão será inserida aqui -->
+    </div>
+    <p class="signature">"Maycon se preocupa com sua segurança" — Gideon ativada 💠</p>
+  </div>
+
+  <script>
+    const cidade = "Brasilia";
+    const iconeClima = document.getElementById("iconeClima");
+    const botaoAtualizar = document.getElementById("botaoAtualizar");
+    const API_KEY = "98b6c743102249708f5202002253005"; // Substitua aqui
+    const unidade = "c"; // Celsius
+
+    function atualizarClima() {
+      const horaAtual = new Date().getHours();
+      iconeClima.textContent = (horaAtual >= 6 && horaAtual < 18) ? "☀️" : "🌙";
+
+      document.getElementById("temperatura").textContent = "Carregando clima atual...";
+      document.getElementById("mensagem").textContent = "Aguarde...";
+      document.getElementById("conselho").textContent = "Analisando ameaças potenciais...";
+      document.getElementById("alerta").textContent = "⚠️ Monitorando seu entorno...";
+      document.getElementById("infoExtra").textContent = "Detalhes do clima sendo carregados...";
+      document.getElementById("previsaoDias").innerHTML = `<h2>Previsão para os próximos dias:</h2>`;
+
+      const urlAtual = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${cidade}&lang=pt`;
+      const urlPrevisao = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${cidade}&days=5&lang=pt`;
+
+      fetch(urlAtual)
+        .then(res => res.json())
+        .then(data => {
+          const temp = Math.round(data.current.temp_c);
+          const feelsLike = Math.round(data.current.feelslike_c);
+          const humidity = data.current.humidity;
+          const wind = Math.round(data.current.wind_kph);
+          const descricao = data.current.condition.text;
+
+          document.getElementById("temperatura").textContent = `${cidade}: ${temp}°C agora (Sensação térmica: ${feelsLike}°C)`;
+          document.getElementById("infoExtra").textContent = `Umidade: ${humidity}%, Vento: ${wind} km/h.`;
+
+          let mensagem = "";
+          let conselho = "";
+          let alerta = "";
+          const alertaElemento = document.getElementById("alerta");
+
+          if (temp <= 15) {
+            mensagem = "Temperatura baixa detectada. Risco de resfriado elevado.";
+            conselho = "Use blusa de frio, evite locais abertos e mantenha-se aquecida. Cuide-se por mim.";
+            alerta = "⚠️ Perigo potencial: exposição ao frio prolongado.";
+            alertaElemento.classList.add("alert-danger");
+          } else if (temp > 15 && temp <= 25) {
+            mensagem = "Clima estável. Nenhuma anomalia identificada.";
+            conselho = "Mesmo com clima neutro, mantenha sua hidratação e atenção ao ambiente.";
+            alerta = "✔️ Nenhuma ameaça climática detectada.";
+            alertaElemento.classList.remove("alert-danger");
+          } else {
+            mensagem = "Temperatura elevada detectada. Risco de insolação.";
+            conselho = "Use protetor solar, evite sol direto e hidrate-se. Lembre-se de se cuidar.";
+            alerta = "⚠️ Evite sair nos horários mais quentes do dia.";
+            alertaElemento.classList.add("alert-danger");
+          }
+
+          document.getElementById("mensagem").textContent = mensagem;
+          document.getElementById("conselho").textContent = conselho;
+          alertaElemento.textContent = alerta;
+
+          sintetizarResposta(mensagem);
+
+          return fetch(urlPrevisao);
+        })
+        .then(res => res.json())
+        .then(previsao => {
+          const previsaoDias = document.getElementById("previsaoDias");
+          previsaoDias.innerHTML = `<h2>Previsão para os próximos dias:</h2>`;
+
+          previsao.forecast.forecastday.forEach(dia => {
+            const data = new Date(dia.date);
+            const nomeDia = data.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+            const maxTemp = Math.round(dia.day.maxtemp_c);
+            const minTemp = Math.round(dia.day.mintemp_c);
+            const descricao = dia.day.condition.text;
+            const precipitacao = dia.day.totalprecip_mm;
+            const vento = Math.round(dia.day.maxwind_kph);
+            const umidade = dia.day.avghumidity;
+
+            const divDia = document.createElement("div");
+            divDia.classList.add("forecast-day");
+            divDia.innerHTML = `
+              <h3>${nomeDia}</h3>
+              <p>🌡️ Máx: ${maxTemp}°C / Mín: ${minTemp}°C</p>
+              <p>🌦️ Condição: ${descricao}</p>
+              <p>💧 Precipitação: ${precipitacao.toFixed(1)} mm</p>
+              <p>💨 Vento: ${vento} km/h</p>
+              <p>💧 Umidade: ${umidade}%</p>
+            `;
+            previsaoDias.appendChild(divDia);
+          });
+        })
+        .catch(err => {
+          document.getElementById("temperatura").textContent = "Erro ao acessar clima.";
+          document.getElementById("mensagem").textContent = "Falha na coleta de dados atmosféricos.";
+          document.getElementById("conselho").textContent = "Recomendação geral: mantenha-se segura e em locais conhecidos.";
+          const alertaElemento = document.getElementById("alerta");
+          alertaElemento.textContent = "⚠️ Monitoramento ativo, mesmo sem clima disponível.";
+          alertaElemento.classList.add("alert-danger");
+          console.error("Erro ao buscar clima:", err);
+        });
+    }
+
+    botaoAtualizar.addEventListener("click", () => {
+      atualizarClima();
+    });
+
+    window.addEventListener("load", () => {
+      atualizarClima();
+    });
+
+    function sintetizarResposta(mensagem) {
+      if (!('speechSynthesis' in window)) return;
+
+      const texto = `Atenção: ${mensagem}. Proteção ativada por Maycon.`;
+      const voz = new SpeechSynthesisUtterance(texto);
+      voz.lang = 'pt-BR';
+      voz.pitch = 1.2;
+      voz.rate = 0.95;
+      voz.volume = 1;
+
+      const vozesDisponiveis = speechSynthesis.getVoices();
+
+      let vozFeminina = vozesDisponiveis.find(v => {
+        return v.lang.startsWith('pt-BR') && (
+          v.name.toLowerCase().includes('maria') || 
+          v.name.toLowerCase().includes('luciana') ||
+          v.name.toLowerCase().includes('patricia') ||
+          v.name.toLowerCase().includes('fernanda')
+        );
+      });
+
+      if (!vozFeminina) {
+        vozFeminina = vozesDisponiveis.find(v => v.lang.startsWith('pt-BR'));
+      }
+
+      if (vozFeminina) {
+        voz.voice = vozFeminina;
+      }
+
+      speechSynthesis.speak(voz);
+    }
+
+    if (typeof speechSynthesis !== "undefined" && speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = () => {
+        sintetizarResposta("Sistema online. Monitorando clima e ameaças. Protegendo a Gideon.");
+      };
+    }
+  </script>
+
+</body>
+</html>
