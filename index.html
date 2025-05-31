@@ -193,7 +193,7 @@
         .then(res => res.json())
         .then(previsao => {
           const previsaoDias = document.getElementById("previsaoDias");
-          previsaoDias.innerHTML = `<h2>Previsão para os próximos dias:</h2>`;
+          previsaoDias.innerHTML = `<h2>Previsão do Tempo:</h2>`;
 
           previsao.forecast.forecastday.forEach(dia => {
             const data = new Date(dia.date);
