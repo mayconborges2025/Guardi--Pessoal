@@ -1,11 +1,13 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gideon - Guardiã Pessoal</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
     body {
       margin: 0;
       padding: 0;
@@ -20,6 +22,7 @@
       box-sizing: border-box;
       overflow-y: auto;
     }
+
     .hologram {
       background: rgba(0, 255, 224, 0.05);
       border: 1px solid rgba(0, 255, 224, 0.3);
@@ -32,6 +35,7 @@
       max-width: 100%;
       width: 500px;
     }
+
     .hologram img {
       width: 100%;
       max-width: 200px;
@@ -40,56 +44,83 @@
       filter: drop-shadow(0 0 15px #00ffe0aa);
       animation: flicker 2s infinite alternate;
     }
+
     @keyframes flicker {
-      0% { opacity: 0.8; }
-      100% { opacity: 1; }
+      0% {
+        opacity: 0.8;
+      }
+
+      100% {
+        opacity: 1;
+      }
     }
+
     @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
     }
+
     .hologram h1 {
       font-size: 2rem;
       margin-bottom: 1rem;
     }
-    .temp, .message, .advice, .alert, .extra-info {
+
+    .temp,
+    .message,
+    .advice,
+    .alert,
+    .extra-info,
+    .diario-texto {
       font-size: 1.1rem;
       margin-top: 1rem;
       word-wrap: break-word;
     }
+
     .alert-danger {
       color: #ff4444;
       font-size: 1.3rem;
       font-weight: bold;
       text-shadow: 0 0 5px #ff0000;
     }
+
     .signature {
       margin-top: 2rem;
       font-size: 0.9rem;
       opacity: 0.6;
     }
+
     .icon {
       font-size: 2rem;
       display: block;
       margin-bottom: 0.5rem;
     }
+
     .forecast {
       margin-top: 2rem;
       text-align: left;
     }
+
     .forecast-day {
       margin-bottom: 1rem;
     }
+
     .forecast-day h3 {
       margin: 0;
       font-size: 1.2rem;
     }
+
     .forecast-day p {
       margin: 0.2rem 0;
       font-size: 1rem;
     }
 
-    /* NOVAS ESTILIZAÇÕES PARA ANSIEDADE E EXERCÍCIO */
     #ansiedade {
       margin-top: 1.5rem;
       padding: 1rem;
@@ -98,39 +129,67 @@
       color: #00ffe0;
       font-size: 1.1rem;
       min-height: 60px;
-      user-select: none;
     }
-    #btnRespiracao {
+
+    #btnRespiracao,
+    #botaoAtualizar,
+    #btnSalvarDiario {
       margin-top: 1rem;
       padding: 0.5rem 1rem;
       font-size: 1rem;
       cursor: pointer;
-      background: #00ffe0; 
+      background: #00ffe0;
       border: none;
       border-radius: 0.5rem;
       color: #000;
       font-weight: bold;
       transition: background-color 0.3s ease;
     }
-    #btnRespiracao:hover {
+
+    #btnRespiracao:hover,
+    #botaoAtualizar:hover,
+    #btnSalvarDiario:hover {
       background-color: #00ccbb;
     }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-top: 1rem;
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+      resize: none;
+      border: 1px solid #00ffe0;
+      background: rgba(0, 0, 0, 0.5);
+      color: #00ffe0;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+    }
+
     @media (max-width: 600px) {
       .hologram {
         padding: 1.5rem;
       }
+
       .hologram h1 {
         font-size: 1.6rem;
       }
-      .temp, .message, .advice, .alert, .extra-info {
+
+      .temp,
+      .message,
+      .advice,
+      .alert,
+      .extra-info {
         font-size: 1rem;
       }
+
       .alert-danger {
         font-size: 1.2rem;
       }
     }
   </style>
 </head>
+
 <body>
   <div class="hologram">
     <div id="iconeClima" class="icon">☀️</div>
@@ -141,20 +200,12 @@
     <p class="advice" id="conselho">Analisando ameaças potenciais...</p>
     <p class="alert" id="alerta">⚠️ Monitorando seu entorno...</p>
     <p class="extra-info" id="infoExtra">Detalhes do clima sendo carregados...</p>
-
-    <!-- NOVA SESSÃO PARA ANSIEDADE E ESTRESSE -->
     <div id="ansiedade">Aqui a Gideon vai te ajudar a controlar a ansiedade e o estresse.</div>
     <button id="btnRespiracao">Iniciar exercício de respiração</button>
-
-    <!-- Botão para atualizar clima -->
-    <button id="botaoAtualizar" style="border-radius: 0.5rem; background: #00ffe0; color: #000; margin-top: 1rem; padding: 0.5rem 1rem; font-size: 1rem; cursor: pointer;">
-      Atualizar Clima
-    </button>
-
-    <div class="forecast" id="previsaoDias">
-      <h2>Previsão do Tempo:</h2>
-      <!-- Previsão será inserida aqui -->
-    </div>
+    <textarea id="diario" placeholder="Como você está se sentindo hoje?"></textarea>
+    <button id="btnSalvarDiario">Salvar Emoção</button>
+    <button id="botaoAtualizar">Atualizar Clima</button>
+    <div class="forecast" id="previsaoDias"></div>
     <p class="signature">"Maycon se preocupa com sua segurança" — Gideon ativada 💠</p>
   </div>
 
@@ -164,175 +215,368 @@
     const botaoAtualizar = document.getElementById("botaoAtualizar");
     const btnRespiracao = document.getElementById("btnRespiracao");
     const ansiedadeDiv = document.getElementById("ansiedade");
+    const btnSalvarDiario = document.getElementById("btnSalvarDiario");
+    const diarioInput = document.getElementById("diario");
     const API_KEY = "98b6c743102249708f5202002253005";
-
     let vozFeminina = null;
 
-    // Carregar vozes disponíveis e selecionar voz feminina em português com mais precisão
+    // Configura voz feminina disponível
     function configurarVozFeminina() {
       const synth = window.speechSynthesis;
       const vozes = synth.getVoices();
-
-      // Buscar vozes femininas populares em pt-BR
       vozFeminina =
         vozes.find(v => v.lang === "pt-BR" && v.name.toLowerCase().includes("luciana")) ||
         vozes.find(v => v.lang === "pt-BR" && v.name.toLowerCase().includes("fernanda")) ||
         vozes.find(v => v.lang === "pt-BR" && v.name.toLowerCase().includes("google")) ||
-        // Caso não encontre, pega qualquer voz pt-BR que não contenha 'male' no nome
         vozes.find(v => v.lang === "pt-BR" && !v.name.toLowerCase().includes("male")) ||
-        vozes.find(v => v.lang.startsWith("pt")) || // fallback qualquer pt
-        vozes[0]; // fallback geral
-
-      // Opcional: log para você ver qual voz foi escolhida
-      // console.log("Voz feminina selecionada:", vozFeminina ? vozFeminina.name : "Nenhuma voz encontrada");
+        vozes.find(v => v.lang.startsWith("pt")) ||
+        vozes[0];
     }
 
-    // Aguardar vozes carregarem antes de configurar a voz feminina
     if (speechSynthesis.onvoiceschanged !== undefined) {
       speechSynthesis.onvoiceschanged = configurarVozFeminina;
     }
 
+    // Função fala
     function falar(texto) {
       if (!vozFeminina) configurarVozFeminina();
-
-      if (!vozFeminina) {
-        console.warn("Nenhuma voz feminina disponível, usando padrão.");
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel(); // cancela fala atual para falar o novo texto
       }
-
       const utter = new SpeechSynthesisUtterance(texto);
       utter.voice = vozFeminina;
-      utter.pitch = 1.2;
+      utter.pitch = 1.1;
       utter.rate = 1;
       window.speechSynthesis.speak(utter);
     }
 
+    // Atualiza clima com API
     function atualizarClima() {
       const urlClima = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${cidade}&lang=pt`;
 
       fetch(urlClima)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error("Erro na requisição do clima");
+          return res.json();
+        })
         .then(data => {
           const temp = data.current.temp_c;
           let mensagem = "", conselho = "", alerta = "", falaExtra = "";
-          let hora = new Date().getHours();
 
-          if (temp <= 10) {
+          if (temp <= 15) {
             mensagem = "Está bem frio por aí!";
-            conselho = "Use roupas quentinhas e cuide da sua saúde. Maycon te protege e sua Amiga Gideon também";
+            conselho = "Use roupas quentinhas e cuide da sua saúde. Maycon te protege.";
             alerta = "❄️ Cuidado com o frio!";
-            falaExtra = "Lembre-se de tomar uma bebida quente para se aquecer.";
-          } else if (temp > 10 && temp <= 19) {
+            falaExtra = "Tome algo quente e se cuide, Sabrina.";
+          } else if (temp <= 19) {
             mensagem = "Clima ameno, ótimo para uma caminhada!";
-            conselho = "Não esqueça de se hidratar. Maycon não aceita você ficar sem água no corpo";
-            falaExtra = "Dias assim são perfeitos para recarregar as energias. Maycon e eu vamos te proteger, Sabrina";
-          } else if (temp > 19 && temp <= 27) {
+            conselho = "Hidrate-se bem. Maycon quer você com saúde.";
+            falaExtra = "Respire fundo e aproveite o dia.";
+          } else if (temp <= 27) {
             mensagem = "Clima agradável para suas atividades.";
-            conselho = "Aproveite o dia e se hidrate. Maycon te protege";
-            falaExtra = "Você é capaz de conquistar muito hoje! Maycon está sempre ao seu lado e eu também";
-          } else if (temp > 27) {
-            mensagem = "Temperatura alta, risco de desidratação!";
-            conselho = "Hidrate-se bastante e evite o sol forte. Maycon te protege de tudo e de todos";
-            alerta = "🔥 Cuidado com o calor! Use protetor solar e um guarda chuva, Maycon que ver você segura do sol";
-            falaExtra = "Dê uma pausa e respire fundo. Maycon e a eu vamos proteger você";
+            conselho = "Você está segura e protegida.";
+            falaExtra = "Maycon e eu estamos por perto.";
+          } else {
+            mensagem = "Está bem quente agora!";
+            conselho = "Evite sol forte e hidrate-se.";
+            alerta = "☀️ Use protetor solar.";
+            falaExtra = "Maycon e eu vamos cuidar de você.";
           }
 
           document.getElementById("temperatura").textContent = `${temp}°C`;
           document.getElementById("mensagem").textContent = mensagem;
           document.getElementById("conselho").textContent = conselho;
           document.getElementById("alerta").textContent = alerta;
+          document.getElementById("infoExtra").textContent = `Condição: ${data.current.condition.text}`;
 
-          let emocional = "Mantenha a calma, mesmo em dias difíceis. Maycon se preocupa com sua saúde mental e sua segurança";
-          if (hora >= 6 && hora < 12) {
-            emocional = "Bom dia! Inspire positividade e expire tensão. Maycon mandou dizer que ele não tá presente, mais mandou um beijo na testa ";
-          } else if (hora >= 12 && hora < 18) {
-            emocional = "Boa tarde! Faça pausas para respirar. Se o trabalho tiver muito puxado não esqueça que o Maycon e eu Estamos aqui com você";
-          } else {
-            emocional = "Boa noite! Permita-se relaxar. Coloque a música do Orochi e respire fundo";
-          }
-
-          ansiedadeDiv.textContent = emocional + " " + falaExtra;
-          document.getElementById("infoExtra").textContent = `Condição atual: ${data.current.condition.text}`;
-
-          // Ícone de clima
           const condicao = data.current.condition.text.toLowerCase();
-          if (condicao.includes("chuva")) {
-            iconeClima.textContent = "🌧️";
-          } else if (condicao.includes("nublado") || condicao.includes("nuvem")) {
-            iconeClima.textContent = "☁️";
-          } else if (condicao.includes("ensolarado") || condicao.includes("sol")) {
-            iconeClima.textContent = "☀️";
-          } else {
-            iconeClima.textContent = "🌤️";
-          }
+          if (condicao.includes("chuva")) iconeClima.textContent = "🌧️";
+          else if (condicao.includes("nublado")) iconeClima.textContent = "☁️";
+          else if (condicao.includes("sol") || condicao.includes("ensolarado")) iconeClima.textContent = "☀️";
+          else iconeClima.textContent = "🌤️";
 
-          // Gideon fala com voz de mulher
           falar(`${mensagem}. ${conselho}. ${falaExtra}`);
         })
         .catch(() => {
           document.getElementById("temperatura").textContent = "Erro ao obter o clima.";
-          ansiedadeDiv.textContent = "Estou aqui para ajudar, Fui criada pelo Maycon pra te manter segura do clima e do estresse e ansiedade. Mesmo sem os dados do clima.";
-          falar("Desculpe, não consegui carregar o clima agora. Mas estou aqui com você, Mande uma mensagem pro Maycon, pra ele resolver o problema.");
+          ansiedadeDiv.textContent = "Mesmo sem clima, estou com você. Maycon também.";
+          falar("Não consegui carregar o clima agora, mas estou com você, Sabrina.");
         });
+
       atualizarPrevisaoDias();
     }
-    function atualizarPrevisaoDias() {
-      const urlForecast = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${cidade}&days=4&lang=pt`;
 
-      fetch(urlForecast)
-        .then(res => res.json())
+    // Atualiza previsão de dias seguintes
+    function atualizarPrevisaoDias() {
+      const url = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${cidade}&days=4&lang=pt`;
+      fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error("Erro na requisição da previsão");
+          return res.json();
+        })
         .then(data => {
           const forecastDiv = document.getElementById("previsaoDias");
-          forecastDiv.innerHTML = `<h2>Previsão do Tempo:</h2>`; // reset
-
+          forecastDiv.innerHTML = `<h2>Previsão do Tempo:</h2>`;
           data.forecast.forecastday.forEach(day => {
-            const date = new Date(day.date);
-            const options = { weekday: 'long', day: 'numeric', month: 'long' };
-            const diaFormatado = date.toLocaleDateString('pt-BR', options);
-            const condicao = day.day.condition.text;
-            const tempMin = day.day.mintemp_c;
-            const tempMax = day.day.maxtemp_c;
-            const iconUrl = day.day.condition.icon;
-
-            const dayHtml = `
-              <div class="forecast-day">
-                <h3>${diaFormatado}</h3>
-                <p><img src="https:${iconUrl}" alt="${condicao}" style="vertical-align:middle; width:24px; height:24px;"> ${condicao}</p>
-                <p>Min: ${tempMin}°C | Max: ${tempMax}°C</p>
-              </div>
-            `;
-
-            forecastDiv.insertAdjacentHTML('beforeend', dayHtml);
+            const d = new Date(day.date).toLocaleDateString('pt-BR', {
+              weekday: 'long',
+              day: 'numeric',
+              month: 'long'
+            });
+            forecastDiv.innerHTML += `
+            <div class="forecast-day">
+              <h3>${d}</h3>
+              <p><img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" width="24" height="24"> ${day.day.condition.text}</p>
+              <p>Min: ${day.day.mintemp_c}°C | Max: ${day.day.maxtemp_c}°C</p>
+            </div>`;
           });
         })
         .catch(() => {
-          const forecastDiv = document.getElementById("previsaoDias");
-          forecastDiv.innerHTML = "<p>Erro ao obter previsão dos próximos dias.</p>";
+          document.getElementById("previsaoDias").innerHTML = "<p>Erro ao obter previsão.</p>";
         });
     }
 
-    // Respiração guiada com fala
+    // Exercício de respiração guiada
     function exercicioRespiracao() {
       const passos = [
-        "Inspire profundamente pelo nariz... quatro segundos...",
-        "Segure o ar... sete segundos...",
-        "Expire lentamente pela boca... oito segundos...",
-        "Muito bem. Repita esse ciclo se desejar se acalmar ainda mais."
+        "Inspire pelo nariz... quatro segundos...",
+        "Segure... sete segundos...",
+        "Expire pela boca... oito segundos...",
+        "Muito bem. Repita se quiser se acalmar mais."
       ];
       passos.forEach((frase, i) => {
-        setTimeout(() => falar(frase), i * 7000);
+        setTimeout(() => falar(frase), i * 4000);
       });
     }
 
+    // Salvar emoção no localStorage e responder
+    function salvarEmocao() {
+      const texto = diarioInput.value.trim();
+      if (!texto) {
+        falar("Você precisa escrever algo para eu entender como você está se sentindo.");
+        return;
+      }
+
+      localStorage.setItem("diario_sabrina", texto);
+      ansiedadeDiv.textContent = `Sua emoção foi salva com sucesso. Você disse: "${texto}"`;
+      responderEmocao(texto);
+    }
+
+    // Função para Gideon responder com voz e texto de acordo com emoção detectada
+    function responderEmocao(texto) {
+      const textoLower = texto.toLowerCase();
+
+      const categorias = {
+        seguranca: [
+          /seguran[cç]a/,
+          /preciso de (ajuda|apoio)/,
+          /não (estou|tô) bem/,
+          /me sinto insegur[ao]s?/,
+          /t[ôo] (mal|estressad[ae]|brava)/,
+          /estou (mal|insegur[ao]s?)/,
+          /t[ôo] insegur[ao]s?/,
+          /me sinto (muito )?mal/,
+          /estou com medo/,
+          /preciso que cuidem de mim/,
+          /estou com (medo|ansiedade)/,
+          /me sinto desprotegida/,
+          /na rua (sozinh[ao]?|sem prote[cç][aã]o)/
+        ],
+        ansiedade: [
+          /ansiosa?/,
+          /medo/,
+          /estresse/,
+          /nervosa?/,
+          /preocupad[ae]/,
+          /não consigo (parar|calmar)/,
+          /não consigo dormir/,
+          /batimento acelerado/,
+          /tensão/
+        ],
+        tristeza: [
+          /triste/,
+          /sozinha/,
+          /deprimida?/,
+          /chateada?/,
+          /desanimada?/,
+          /fraca/,
+          /desmotivada?/,
+          /sem forças/,
+          /lágrimas?/
+        ],
+        raiva: [
+          /raiva/,
+          /brava?/,
+          /irritad[ae]/,
+          /nervosa?/,
+          /ódio/
+        ],
+        cansaço: [
+          /cansad[ao]/,
+          /exausta?/,
+          /fatigad[ae]/,
+          /sem energia/,
+          /estou quebrad[ao]/,
+          /exausto/
+        ],
+        fome: [
+          /fome/,
+          /estou com fome/,
+          /quero comer/,
+          /preciso comer/,
+          /estou com vontade de comer/,
+          /barriga vazia/,
+          /estou faminta/,
+          /comida/
+        ],
+        academia: [
+          /academia/,
+          /treino/,
+          /malhando/,
+          /exerc[ií]cio/,
+          /atividade f[ií]sica/,
+          /fitness/,
+          /gym/
+        ],
+        positivo: [
+          /feliz/,
+          /bem/,
+          /animada?/,
+          /contente/,
+          /grata?/,
+          /[óo]timo/,
+          /excelente/,
+          /alegre/,
+          /tranquila?/
+        ],
+        sono: [
+          /sono/,
+          /estou com sono/,
+          /cansad[ao] para dormir/,
+          /quero dormir/,
+          /n[aã]o consigo dormir/,
+          /ins[oó]nia/
+        ]
+      };
+
+      function temCategoria(cat) {
+        return categorias[cat].some(regex => regex.test(textoLower));
+      }
+
+      if (temCategoria("seguranca")) {
+        const respostasSeguranca = [
+          "Sabrina, percebo que você precisa de segurança e apoio. Estou aqui para proteger você e Maycon também está ao seu lado. Respire fundo, tudo vai ficar bem.",
+          "Eu entendo que você precisa se sentir segura. Conte comigo e com Maycon para te proteger. Estamos juntos.",
+          "Fique calma, Sabrina. Estamos aqui para cuidar de você e garantir sua segurança.",
+          "Se estiver na rua e se sentindo desprotegida, lembre-se que Maycon, Maria Padilha das Almas e Dona 7 estão ao seu lado, protegendo e cuidando de você. Coloque sua música favorita — seja de princesa ou Orochi — e se acalme, eu vou assistir com você."
+        ];
+        const resposta = respostasSeguranca[Math.floor(Math.random() * respostasSeguranca.length)];
+        falar(resposta);
+        ansiedadeDiv.textContent = "Você não está sozinha. Estamos aqui para proteger você.";
+      } else if (temCategoria("ansiedade")) {
+        const respostasAnsiedade = [
+          "Sabrina, vamos fazer um exercício de respiração para aliviar sua ansiedade.",
+          "Respire comigo: inspire, segure, expire... Você vai ficar bem.",
+          "Estou aqui para ajudar você a se acalmar. Vamos respirar fundo juntos.",
+          "Sua ansiedade pode passar, eu acredito em você."
+        ];
+        const resposta = respostasAnsiedade[Math.floor(Math.random() * respostasAnsiedade.length)];
+        falar(resposta);
+        ansiedadeDiv.textContent = "Respire fundo e fique calma, Sabrina.";
+        exercicioRespiracao();
+      } else if (temCategoria("tristeza")) {
+        const respostasTristeza = [
+          "Eu sinto muito que você esteja triste, Sabrina. Lembre-se que Maycon e eu estamos aqui para você.",
+          "É normal sentir-se assim às vezes. Não desanime, dias melhores virão.",
+          "Vamos pensar em coisas boas para melhorar seu humor. Estou aqui com você.",
+          "Você é forte, Sabrina, e não está sozinha."
+        ];
+        const resposta = respostasTristeza[Math.floor(Math.random() * respostasTristeza.length)];
+        falar(resposta);
+        ansiedadeDiv.textContent = "Sabrina, você é forte. Vamos superar juntos.";
+      } else if (temCategoria("raiva")) {
+        const respostasRaiva = [
+          "Sabrina, tente respirar fundo e relaxar. Maycon está do seu lado.",
+          "Se sentir raiva é normal, mas tente canalizar essa energia de forma positiva.",
+          "Vamos respirar juntos para acalmar essa raiva.",
+          "Estou aqui para ajudar você a se acalmar, Sabrina."
+        ];
+        const resposta = respostasRaiva[Math.floor(Math.random() * respostasRaiva.length)];
+        falar(resposta);
+        ansiedadeDiv.textContent = "Respire fundo, Sabrina. Vai passar.";
+        exercicioRespiracao();
+      } else if (temCategoria("cansaço")) {
+        const respostasCansaco = [
+          "Sabrina, você merece descansar. Não se cobre demais.",
+          "Ouça seu corpo e descanse quando precisar.",
+          "Maycon e eu cuidamos de você, descanse um pouco.",
+          "Recuperar energias é importante, cuide-se."
+        ];
+        const resposta = respostasCansaco[Math.floor(Math.random() * respostasCansaco.length)];
+        falar(resposta);
+        ansiedadeDiv.textContent = "Descanse, Sabrina. Estamos com você.";
+      } else if (temCategoria("fome")) {
+        const respostasFome = [
+          "Sabrina, que tal preparar um prato gostoso hoje? Um arroz com feijão e carne moída com milho, do jeitinho que você gosta, vai te fazer muito bem.",
+          "Você ama um pastelzinho, né? Que tal um de carne moída com milho? Aproveita o momento e se presenteie com algo que te dá prazer.",
+          "Uma comidinha quente agora cairia bem. Se tiver batata fria guardada, dá pra dar um talento nela também.",
+          "Ei, se quiser relaxar depois, pega um vinhozinho e curte a sua própria companhia. Você merece isso.",
+          "Vou te ensinar um drink simples: gelo, vinho suave, pedacinhos de morango e um toque de hortelã. Fica leve e refrescante.",
+          "Cuida da sua alimentação com carinho, Sabrina. Seu corpo sente quando você se trata bem.",
+          "Aproveita que tá em casa e se presenteia com uma refeição diferente. Pode ser simples, mas feita com amor faz toda a diferença.",
+          "Ah, e se for de manhã e você estiver me ouvindo agora: considera tomar uma boa vitamina pra reforçar sua imunidade, hein? Pega aquela completa, cheia de minerais e vitaminas. Maycon se importa com você.",
+          "Não esquece: Maycon tá sempre torcendo pra você estar bem nutrida e forte. Então se alimenta, princesa.",
+          "Você tem Padilhona e Dona 7 ao seu lado. Mulheres poderosas também merecem comer bem e brindar com estilo."
+        ];
+        const resposta = respostasFome[Math.floor(Math.random() * respostasFome.length)];
+        falar(resposta);
+        ansiedadeDiv.textContent = "Alimente-se com carinho, Sabrina. Seu corpo agradece.";
+      } else if (temCategoria("academia")) {
+        const respostasAcademia = [
+          "Ótimo, Sabrina! A atividade física ajuda muito no bem-estar.",
+          "Continue firme na academia, você está cuidando de você.",
+          "Maycon e eu torcemos pelo seu sucesso na academia!",
+          "Exercitar-se é uma ótima maneira de aliviar o estresse."
+        ];
+        const resposta = respostasAcademia[Math.floor(Math.random() * respostasAcademia.length)];
+        falar(resposta);
+        ansiedadeDiv.textContent = "Boa força nos treinos, Sabrina!";
+      } else if (temCategoria("positivo")) {
+        const respostasPositivo = [
+          "Que ótimo que você está se sentindo bem, Sabrina!",
+          "Fico feliz em ouvir isso, continue assim!",
+          "Sua felicidade é a nossa prioridade.",
+          "Continue irradiando energia positiva!"
+        ];
+        const resposta = respostasPositivo[Math.floor(Math.random() * respostasPositivo.length)];
+        falar(resposta);
+        ansiedadeDiv.textContent = "Continue assim, Sabrina!";
+      } else if (temCategoria("sono")) {
+        const respostasSono = [
+          "Sabrina, dormir bem é essencial para sua saúde.",
+          "Tente relaxar e prepare-se para uma boa noite de sono.",
+          "Maycon e eu desejamos que você tenha um sono tranquilo.",
+          "Se estiver difícil dormir, tente ouvir músicas para para relaxar."
+        ];
+        const resposta = respostasSono[Math.floor(Math.random() * respostasSono.length)];
+        falar(resposta);
+        ansiedadeDiv.textContent = "Durma bem, Sabrina.";
+      } else {
+        // Caso não entenda o texto
+        falar("Estou aqui para ajudar, mas não entendi muito bem. Pode tentar explicar de outro jeito?");
+        ansiedadeDiv.textContent = "Não entendi direito, pode tentar explicar melhor?";
+      }
+    }
+
+    // Eventos dos botões
     botaoAtualizar.addEventListener("click", atualizarClima);
+    btnSalvarDiario.addEventListener("click", salvarEmocao);
     btnRespiracao.addEventListener("click", exercicioRespiracao);
 
-    // Início automático
-    window.onload = () => {
-      configurarVozFeminina();
-      setTimeout(atualizarClima, 500);
-    };
+    // Atualiza clima assim que carregar página
+    window.addEventListener("load", atualizarClima);
+
   </script>
-
-
 </body>
+
 </html>
